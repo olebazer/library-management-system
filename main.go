@@ -2,86 +2,69 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
 )
 
 type Author struct {
-	id        int
-	firstName string
-	lastName  string
-	birthday  string
+	Id        int
+	FirstName string
+	LastName  string
+	Birthday  string
 }
 
 type Book struct {
-	id        int
-	title     string
-	author    Author
-	release   string
-	available bool
+	Id        int    `json:"id"`
+	Title     string `json:"title"`
+	AuthorId  int    `json:"authorId"`
+	Release   string `json:"release"`
+	Available bool   `json:"available"`
 }
 
-var authors = []Author{
-	{
-		id:        1,
-		firstName: "Harper",
-		lastName:  "Lee",
-		birthday:  "28.04.1926",
-	},
-	{
-		id:        2,
-		firstName: "Suzanne",
-		lastName:  "Collins",
-		birthday:  "11.08.1962",
-	},
-	{
-		id:        3,
-		firstName: "William",
-		lastName:  "Golding",
-		birthday:  "19.09.1911",
-	},
-}
-
-var books = []Book{
-	{
-		id:        1,
-		title:     "To Kill a Mockingbird",
-		author:    authors[0],
-		release:   "11.07.1960",
-		available: true,
-	},
-	{
-		id:        2,
-		title:     "The Hunger Games",
-		author:    authors[1],
-		release:   "14.09.2008",
-		available: true,
-	},
-	{
-		id:        3,
-		title:     "Lord of the Flies",
-		author:    authors[2],
-		release:   "17.09.1954",
-		available: false,
-	},
-}
-
+var authors = []Author{}
+var books = []Book{}
 var scanner = bufio.NewScanner(os.Stdin)
 
+func readJSONData() {
+	file, err := os.ReadFile("./books.json")
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	err = json.Unmarshal(file, &books)
+	if err != nil {
+		fmt.Println("Error parsing JSON:", err)
+		return
+	}
+
+	file, err = os.ReadFile("./authors.json")
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	err = json.Unmarshal(file, &authors)
+	if err != nil {
+		fmt.Println("Error parsing JSON:", err)
+		return
+	}
+}
+
 func showBookInfo(book Book) {
-	fmt.Println("ID:", book.id)
-	fmt.Println("Title:", book.title)
-	fmt.Printf("Author: %s ", book.author.firstName)
-	fmt.Printf("%s\n", book.author.lastName)
-	fmt.Println("Release:", book.release)
-	fmt.Printf("Available: %t\n\n", book.available)
+	fmt.Println("ID:", book.Id)
+	fmt.Println("Title:", book.Title)
+	author := authors[book.AuthorId]
+	fmt.Printf("Author: %s ", author.FirstName)
+	fmt.Printf("%s\n", author.LastName)
+	fmt.Println("Release:", book.Release)
+	fmt.Printf("Available: %t\n\n", book.Available)
 }
 
 func showAuthorInfo(author Author) {
-	fmt.Println("ID:", author.id)
-	fmt.Printf("Name: %s %s\n", author.firstName, author.lastName)
-	fmt.Printf("Birthday: %s\n\n", author.birthday)
+	fmt.Println("ID:", author.Id)
+	fmt.Printf("Name: %s %s\n", author.FirstName, author.LastName)
+	fmt.Printf("Birthday: %s\n\n", author.Birthday)
 }
 
 func listBooks() {
@@ -117,7 +100,7 @@ func createBook() {
 	scanner.Scan()
 	release := scanner.Text()
 	available := true
-	books = append(books, Book{id, title, authors[authorId-1], release, available})
+	books = append(books, Book{id, title, authorId, release, available})
 	fmt.Println()
 }
 
@@ -152,6 +135,7 @@ func shutdown() {
 }
 
 func main() {
+	readJSONData()
 	fmt.Printf("### LIBRARY MANAGEMENT SYSTEM ###\n\n")
 	showMenu()
 
@@ -177,3 +161,8 @@ func main() {
 		}
 	}
 }
+
+// TODO: read books and authors from json file
+// TODO: split project into multiple files
+// TODO: intorduce customers
+// TODO: try to use pointers

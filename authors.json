@@ -1,0 +1,20 @@
+[
+	{
+		"id": 1,
+		"firstName": "Harper",
+		"lastName": "Lee",
+		"birthday": "28.04.1926"
+	},
+	{
+		"id": 2,
+		"firstName": "Suzanne",
+		"lastName": "Collins",
+		"birthday": "11.08.1962"
+	},
+	{
+		"id": 3,
+		"firstName": "William",
+		"lastName": "Golding",
+		"birthday": "19.09.1911"
+	}
+]
