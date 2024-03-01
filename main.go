@@ -22,43 +22,6 @@ type Book struct {
 	available bool
 }
 
-func showBookInfo(book Book) {
-	fmt.Println("ID:", book.id)
-	fmt.Println("Title:", book.title)
-	fmt.Printf("Author: %s ", book.author.firstName)
-	fmt.Printf("%s\n", book.author.lastName)
-	fmt.Println("Release:", book.release)
-	fmt.Println("Available:", book.available)
-}
-
-func listBooks() {
-	for index, book := range books {
-		fmt.Printf("Book No. %d:\n", index+1)
-		showBookInfo(book)
-		fmt.Println()
-	}
-}
-
-func createBook() {
-	scanner := bufio.NewScanner(os.Stdin)
-	id := len(books) + 1
-	fmt.Print("Enter book title: ")
-	scanner.Scan()
-	title := scanner.Text()
-	fmt.Print("Enter author id: ")
-	scanner.Scan()
-	authorId, err := strconv.Atoi(scanner.Text())
-	if err != nil {
-		fmt.Println("Book creation failed")
-		return
-	}
-	fmt.Print("Enter release date: ")
-	scanner.Scan()
-	release := scanner.Text()
-	available := true
-	books = append(books, Book{id, title, authors[authorId-1], release, available})
-}
-
 var authors = []Author{
 	{
 		id:        1,
@@ -104,7 +67,79 @@ var books = []Book{
 	},
 }
 
+var scanner = bufio.NewScanner(os.Stdin)
+
+func showBookInfo(book Book) {
+	fmt.Println("ID:", book.id)
+	fmt.Println("Title:", book.title)
+	fmt.Printf("Author: %s ", book.author.firstName)
+	fmt.Printf("%s\n", book.author.lastName)
+	fmt.Println("Release:", book.release)
+	fmt.Println("Available:", book.available)
+}
+
+func listBooks() {
+	for index, book := range books {
+		fmt.Printf("Book No. %d:\n", index+1)
+		showBookInfo(book)
+		fmt.Println()
+	}
+}
+
+func createBook() {
+	id := len(books) + 1
+	fmt.Print("Enter book title: ")
+	scanner.Scan()
+	title := scanner.Text()
+	fmt.Print("Enter author id: ")
+	scanner.Scan()
+	authorId, err := strconv.Atoi(scanner.Text())
+	if err != nil {
+		fmt.Println("Book creation failed")
+		return
+	}
+	fmt.Print("Enter release date: ")
+	scanner.Scan()
+	release := scanner.Text()
+	available := true
+	books = append(books, Book{id, title, authors[authorId-1], release, available})
+}
+
+func showMenu() {
+	fmt.Println("1 -> show menu")
+	fmt.Println("2 -> list books")
+	fmt.Println("3 -> create book")
+	fmt.Println("4 -> list authors")
+	fmt.Println("5 -> create author")
+	fmt.Println("0 -> quit")
+}
+
+func shutdown() {
+	fmt.Println("Good Bye")
+}
+
 func main() {
-	createBook()
-	listBooks()
+	fmt.Println("### LIBRARY MANAGEMENT SYSTEM ###")
+	showMenu()
+
+	commands := map[string]func(){
+		"1": showMenu,
+		"2": listBooks,
+		"3": createBook,
+		"4": listBooks,
+		"5": createBook,
+		"0": shutdown,
+	}
+
+	var input string
+	for input != "0" {
+		fmt.Print("(lms)> ")
+		scanner.Scan()
+		input = scanner.Text()
+		if command, ok := commands[input]; ok {
+			command()
+		} else {
+			fmt.Println("Invalid command")
+		}
+	}
 }
