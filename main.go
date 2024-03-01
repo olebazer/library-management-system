@@ -75,20 +75,35 @@ func showBookInfo(book Book) {
 	fmt.Printf("Author: %s ", book.author.firstName)
 	fmt.Printf("%s\n", book.author.lastName)
 	fmt.Println("Release:", book.release)
-	fmt.Println("Available:", book.available)
+	fmt.Printf("Available: %t\n\n", book.available)
+}
+
+func showAuthorInfo(author Author) {
+	fmt.Println("ID:", author.id)
+	fmt.Printf("Name: %s %s\n", author.firstName, author.lastName)
+	fmt.Printf("Birthday: %s\n\n", author.birthday)
 }
 
 func listBooks() {
+	fmt.Println("+++ LIST OF BOOKS +++")
 	for index, book := range books {
 		fmt.Printf("Book No. %d:\n", index+1)
 		showBookInfo(book)
-		fmt.Println()
+	}
+}
+
+func listAuthors() {
+	fmt.Println("+++ LIST OF AUTHORS +++")
+	for index, author := range authors {
+		fmt.Printf("Author No. %d:\n", index+1)
+		showAuthorInfo(author)
 	}
 }
 
 func createBook() {
+	fmt.Println("+++ CREATE NEW BOOK +++")
 	id := len(books) + 1
-	fmt.Print("Enter book title: ")
+	fmt.Print("Enter title: ")
 	scanner.Scan()
 	title := scanner.Text()
 	fmt.Print("Enter author id: ")
@@ -103,15 +118,33 @@ func createBook() {
 	release := scanner.Text()
 	available := true
 	books = append(books, Book{id, title, authors[authorId-1], release, available})
+	fmt.Println()
+}
+
+func createAuthor() {
+	fmt.Println("+++ CREATE NEW AUTHOR +++")
+	id := len(authors) + 1
+	fmt.Print("Enter first name: ")
+	scanner.Scan()
+	firstName := scanner.Text()
+	fmt.Print("Enter last name: ")
+	scanner.Scan()
+	lastName := scanner.Text()
+	fmt.Print("Enter birthday: ")
+	scanner.Scan()
+	birthday := scanner.Text()
+	authors = append(authors, Author{id, firstName, lastName, birthday})
+	fmt.Println()
 }
 
 func showMenu() {
+	fmt.Println("+++ MENU +++")
 	fmt.Println("1 -> show menu")
 	fmt.Println("2 -> list books")
 	fmt.Println("3 -> create book")
 	fmt.Println("4 -> list authors")
 	fmt.Println("5 -> create author")
-	fmt.Println("0 -> quit")
+	fmt.Printf("0 -> quit\n\n")
 }
 
 func shutdown() {
@@ -119,15 +152,15 @@ func shutdown() {
 }
 
 func main() {
-	fmt.Println("### LIBRARY MANAGEMENT SYSTEM ###")
+	fmt.Printf("### LIBRARY MANAGEMENT SYSTEM ###\n\n")
 	showMenu()
 
 	commands := map[string]func(){
 		"1": showMenu,
 		"2": listBooks,
 		"3": createBook,
-		"4": listBooks,
-		"5": createBook,
+		"4": listAuthors,
+		"5": createAuthor,
 		"0": shutdown,
 	}
 
@@ -136,10 +169,11 @@ func main() {
 		fmt.Print("(lms)> ")
 		scanner.Scan()
 		input = scanner.Text()
+		fmt.Println()
 		if command, ok := commands[input]; ok {
 			command()
 		} else {
-			fmt.Println("Invalid command")
+			fmt.Printf("Invalid command\n\n")
 		}
 	}
 }
