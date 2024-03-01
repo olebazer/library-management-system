@@ -162,7 +162,7 @@ func main() {
 	}
 }
 
-// TODO: read books and authors from json file
+// TODO: write new books and authors to json file
 // TODO: split project into multiple files
 // TODO: intorduce customers
 // TODO: try to use pointers
