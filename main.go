@@ -269,3 +269,4 @@ func main() {
 }
 
 // TODO: add functions to modify and delete struct objects
+// TODO: add a function to borrow books for a customer
