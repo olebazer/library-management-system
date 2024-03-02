@@ -9,10 +9,10 @@ import (
 )
 
 type Author struct {
-	Id        int
-	FirstName string
-	LastName  string
-	Birthday  string
+	Id        int    `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Birthday  string `json:"birthday"`
 }
 
 type Book struct {
@@ -23,31 +23,54 @@ type Book struct {
 	Available bool   `json:"available"`
 }
 
+type Customer struct {
+	Id       int    `json:"id"`
+	Email    string `json:"Email"`
+	Username string `json:"username"`
+}
+
 var authors = []Author{}
 var books = []Book{}
+var customers = []Customer{}
 var scanner = bufio.NewScanner(os.Stdin)
 
 func readJSONData() {
-	file, err := os.ReadFile("./books.json")
+	// reading books.json
+	file, err := os.ReadFile("data/books.json")
 	if err != nil {
-		fmt.Println("Error reading file:", err)
+		fmt.Println("Error reading book data:", err)
 		return
 	}
+	// parsing books.json
 	err = json.Unmarshal(file, &books)
 	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
+		fmt.Println("Error parsing book data:", err)
 		return
 	}
 
-	file, err = os.ReadFile("./authors.json")
+	// reading authors.json
+	file, err = os.ReadFile("data/authors.json")
 	if err != nil {
-		fmt.Println("Error reading file:", err)
+		fmt.Println("Error reading author data:", err)
 		return
 	}
+	// parsing authors.json
 	err = json.Unmarshal(file, &authors)
 	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
+		fmt.Println("Error parsing author data:", err)
 		return
+	}
+
+	// reading customers.json
+	file, err = os.ReadFile("data/customers.json")
+	if err != nil {
+		fmt.Println("Error reading customer data:", err)
+		return
+	}
+	// parsing customers.json
+	err = json.Unmarshal(file, &customers)
+	if err != nil {
+		fmt.Println("Error parsing customer data:", err)
 	}
 }
 
@@ -100,8 +123,23 @@ func createBook() {
 	scanner.Scan()
 	release := scanner.Text()
 	available := true
-	books = append(books, Book{id, title, authorId, release, available})
+	book := Book{id, title, authorId, release, available}
+	books = append(books, book)
 	fmt.Println()
+
+	file, err := os.Create("./books.json")
+	if err != nil {
+		fmt.Println("Error creating file:", err)
+		return
+	}
+	defer file.Close()
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "    ")
+	err = encoder.Encode(books)
+	if err != nil {
+		fmt.Println("Error encoding JSON:", err)
+		return
+	}
 }
 
 func createAuthor() {
@@ -135,6 +173,7 @@ func shutdown() {
 }
 
 func main() {
+	// fill authors, books and customers with json data
 	readJSONData()
 	fmt.Printf("### LIBRARY MANAGEMENT SYSTEM ###\n\n")
 	showMenu()
@@ -162,7 +201,6 @@ func main() {
 	}
 }
 
-// TODO: write new books and authors to json file
-// TODO: split project into multiple files
 // TODO: intorduce customers
 // TODO: try to use pointers
+// TODO: split project into multiple files

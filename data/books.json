@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "title": "To Kill a Mockingbird",
+        "authorId": 1,
+        "release": "11.07.1960",
+        "available": true
+    },
+    {
+        "id": 2,
+        "title": "The Hunger Games",
+        "authorId": 2,
+        "release": "14.09.2008",
+        "available": true
+    },
+    {
+        "id": 3,
+        "title": "Lord of the Flies",
+        "authorId": 0,
+        "release": "17.09.1954",
+        "available": false
+    }
+]
