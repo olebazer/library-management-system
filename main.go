@@ -227,6 +227,8 @@ func showMenu() {
 	fmt.Println("3 -> create book")
 	fmt.Println("4 -> list authors")
 	fmt.Println("5 -> create author")
+	fmt.Println("6 -> list customers")
+	fmt.Println("7 -> create customer")
 	fmt.Printf("0 -> quit\n\n")
 }
 
