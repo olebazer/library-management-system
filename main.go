@@ -264,5 +264,3 @@ func main() {
 		}
 	}
 }
-
-// TODO: split project into multiple files
