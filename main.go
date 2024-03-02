@@ -107,6 +107,7 @@ func listAuthors() {
 }
 
 func createBook() {
+	// create book from user input
 	fmt.Println("+++ CREATE NEW BOOK +++")
 	id := len(books) + 1
 	fmt.Print("Enter title: ")
@@ -123,11 +124,13 @@ func createBook() {
 	scanner.Scan()
 	release := scanner.Text()
 	available := true
+	// add book to books array
 	book := Book{id, title, authorId, release, available}
 	books = append(books, book)
 	fmt.Println()
 
-	file, err := os.Create("./books.json")
+	// write books to json file
+	file, err := os.Create("data/books.json")
 	if err != nil {
 		fmt.Println("Error creating file:", err)
 		return
@@ -137,12 +140,13 @@ func createBook() {
 	encoder.SetIndent("", "    ")
 	err = encoder.Encode(books)
 	if err != nil {
-		fmt.Println("Error encoding JSON:", err)
+		fmt.Println("Error encoding books JSON:", err)
 		return
 	}
 }
 
 func createAuthor() {
+	// create author from user input
 	fmt.Println("+++ CREATE NEW AUTHOR +++")
 	id := len(authors) + 1
 	fmt.Print("Enter first name: ")
@@ -154,8 +158,22 @@ func createAuthor() {
 	fmt.Print("Enter birthday: ")
 	scanner.Scan()
 	birthday := scanner.Text()
+	// add author to authors array
 	authors = append(authors, Author{id, firstName, lastName, birthday})
 	fmt.Println()
+
+	// write authors to json file
+	file, err := os.Create("data/authors.json")
+	if err != nil {
+		fmt.Println("Error creating file:", err)
+	}
+	defer file.Close()
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "    ")
+	err = encoder.Encode(authors)
+	if err != nil {
+		fmt.Println("Error encoding authors JSON:", err)
+	}
 }
 
 func showMenu() {
