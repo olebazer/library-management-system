@@ -93,7 +93,7 @@ func showAuthorInfo(author *Author) {
 func showCustomerInfo(customer *Customer) {
 	fmt.Println("ID:", customer.Id)
 	fmt.Println("Email:", customer.Email)
-	fmt.Println("Username:\n", customer.Username)
+	fmt.Printf("Username: %s\n\n", customer.Username)
 }
 
 func listBooks() {
