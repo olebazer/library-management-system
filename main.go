@@ -93,7 +93,7 @@ func showAuthorInfo(author *Author) {
 func showCustomerInfo(customer *Customer) {
 	fmt.Println("ID:", customer.Id)
 	fmt.Println("Email:", customer.Email)
-	fmt.Println("Username:", customer.Username)
+	fmt.Println("Username:\n", customer.Username)
 }
 
 func listBooks() {
@@ -203,6 +203,7 @@ func createCustomer() {
 	username := scanner.Text()
 	// add customer to customers array
 	customers = append(customers, Customer{id, email, username})
+	fmt.Println()
 
 	// write customers to json file
 	file, err := os.Create("data/customers.json")
