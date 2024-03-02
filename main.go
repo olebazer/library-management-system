@@ -25,7 +25,7 @@ type Book struct {
 
 type Customer struct {
 	Id       int    `json:"id"`
-	Email    string `json:"Email"`
+	Email    string `json:"email"`
 	Username string `json:"username"`
 }
 
@@ -74,7 +74,7 @@ func readJSONData() {
 	}
 }
 
-func showBookInfo(book Book) {
+func showBookInfo(book *Book) {
 	fmt.Println("ID:", book.Id)
 	fmt.Println("Title:", book.Title)
 	author := authors[book.AuthorId]
@@ -84,17 +84,23 @@ func showBookInfo(book Book) {
 	fmt.Printf("Available: %t\n\n", book.Available)
 }
 
-func showAuthorInfo(author Author) {
+func showAuthorInfo(author *Author) {
 	fmt.Println("ID:", author.Id)
 	fmt.Printf("Name: %s %s\n", author.FirstName, author.LastName)
 	fmt.Printf("Birthday: %s\n\n", author.Birthday)
+}
+
+func showCustomerInfo(customer *Customer) {
+	fmt.Println("ID:", customer.Id)
+	fmt.Println("Email:", customer.Email)
+	fmt.Println("Username:", customer.Username)
 }
 
 func listBooks() {
 	fmt.Println("+++ LIST OF BOOKS +++")
 	for index, book := range books {
 		fmt.Printf("Book No. %d:\n", index+1)
-		showBookInfo(book)
+		showBookInfo(&book)
 	}
 }
 
@@ -102,7 +108,15 @@ func listAuthors() {
 	fmt.Println("+++ LIST OF AUTHORS +++")
 	for index, author := range authors {
 		fmt.Printf("Author No. %d:\n", index+1)
-		showAuthorInfo(author)
+		showAuthorInfo(&author)
+	}
+}
+
+func listCustomers() {
+	fmt.Println("+++ LIST OF CUSTOMERS +++")
+	for index, customer := range customers {
+		fmt.Printf("Customer No. %d:\n", index+1)
+		showCustomerInfo(&customer)
 	}
 }
 
@@ -125,14 +139,13 @@ func createBook() {
 	release := scanner.Text()
 	available := true
 	// add book to books array
-	book := Book{id, title, authorId, release, available}
-	books = append(books, book)
+	books = append(books, Book{id, title, authorId, release, available})
 	fmt.Println()
 
 	// write books to json file
 	file, err := os.Create("data/books.json")
 	if err != nil {
-		fmt.Println("Error creating file:", err)
+		fmt.Println("Error creating books file:", err)
 		return
 	}
 	defer file.Close()
@@ -165,7 +178,8 @@ func createAuthor() {
 	// write authors to json file
 	file, err := os.Create("data/authors.json")
 	if err != nil {
-		fmt.Println("Error creating file:", err)
+		fmt.Println("Error creating authors file:", err)
+		return
 	}
 	defer file.Close()
 	encoder := json.NewEncoder(file)
@@ -173,6 +187,36 @@ func createAuthor() {
 	err = encoder.Encode(authors)
 	if err != nil {
 		fmt.Println("Error encoding authors JSON:", err)
+		return
+	}
+}
+
+func createCustomer() {
+	// create customer from user input
+	fmt.Println("+++ CREATE NEW CUSTOMER +++")
+	id := len(customers) + 1
+	fmt.Print("Enter email adress: ")
+	scanner.Scan()
+	email := scanner.Text()
+	fmt.Print("Enter username: ")
+	scanner.Scan()
+	username := scanner.Text()
+	// add customer to customers array
+	customers = append(customers, Customer{id, email, username})
+
+	// write customers to json file
+	file, err := os.Create("data/customers.json")
+	if err != nil {
+		fmt.Println("Error creating customers file:", err)
+		return
+	}
+	defer file.Close()
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "    ")
+	err = encoder.Encode(customers)
+	if err != nil {
+		fmt.Println("Error encoding customers JSON:", err)
+		return
 	}
 }
 
@@ -202,6 +246,8 @@ func main() {
 		"3": createBook,
 		"4": listAuthors,
 		"5": createAuthor,
+		"6": listCustomers,
+		"7": createCustomer,
 		"0": shutdown,
 	}
 
@@ -219,6 +265,4 @@ func main() {
 	}
 }
 
-// TODO: intorduce customers
-// TODO: try to use pointers
 // TODO: split project into multiple files
