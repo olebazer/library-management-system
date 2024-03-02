@@ -9,23 +9,23 @@ import (
 )
 
 type Author struct {
-    Id        int    `json:"id"`
+    Id int `json:"id"`
     FirstName string `json:"firstName"`
-    LastName  string `json:"lastName"`
-    Birthday  string `json:"birthday"`
+    LastName string `json:"lastName"`
+    Birthday string `json:"birthday"`
 }
 
 type Book struct {
-    Id        int    `json:"id"`
-    Title     string `json:"title"`
-    AuthorId  int    `json:"authorId"`
-    Release   string `json:"release"`
-    Available bool   `json:"available"`
+    Id int `json:"id"`
+    Title string `json:"title"`
+    AuthorId int `json:"authorId"`
+    Release string `json:"release"`
+    Available bool `json:"available"`
 }
 
 type Customer struct {
-    Id       int    `json:"id"`
-    Email    string `json:"email"`
+    Id int `json:"id"`
+    Email string `json:"email"`
     Username string `json:"username"`
 }
 
@@ -267,3 +267,5 @@ func main() {
         }
     }
 }
+
+// TODO: add functions to modify and delete struct objects
