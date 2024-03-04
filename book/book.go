@@ -22,11 +22,20 @@ var Books = []Book{}
 func showBookInfo(book *Book) {
     fmt.Println("ID:", book.Id)
     fmt.Println("Title:", book.Title)
-    author := author.Authors[book.AuthorId]
+    author := book.getAuthor()
     fmt.Printf("Author: %s ", author.FirstName)
     fmt.Printf("%s\n", author.LastName)
     fmt.Println("Release:", book.Release)
     fmt.Printf("Available: %t\n\n", book.Available)
+}
+
+func (book Book) getAuthor() author.Author {
+    for _, author := range author.Authors {
+        if author.Id == book.AuthorId {
+            return author
+        }
+    }
+    return author.Author{}
 }
 
 func ListBooks() {
