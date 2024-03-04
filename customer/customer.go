@@ -15,6 +15,20 @@ type Customer struct {
 
 var Customers = []Customer{}
 
+func ReadCustomersData() {
+    // reading customers.json
+    file, err := os.ReadFile("data/customers.json")
+    if err != nil {
+        fmt.Println("Error reading customers data:", err)
+        return
+    }
+    // parsing customers.json
+    err = json.Unmarshal(file, &Customers)
+    if err != nil {
+        fmt.Println("Error parsing customer data:", err)
+    }
+}
+
 func showCustomerInfo(customer *Customer) {
     fmt.Println("ID:", customer.Id)
     fmt.Println("Email:", customer.Email)

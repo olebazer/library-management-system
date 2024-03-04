@@ -7,7 +7,6 @@ import (
     "os"
 )
 
-
 type Author struct {
     Id int `json:"id"`
     FirstName string `json:"firstName"`
@@ -17,6 +16,19 @@ type Author struct {
 
 var Authors = []Author{}
 
+func ReadAuthorsData() {
+    // reading authors.json
+    file, err := os.ReadFile("data/authors.json")
+    if err != nil {
+        fmt.Println("Error reading authors data:", err)
+        return
+    }
+    // parsing authors.json
+    err = json.Unmarshal(file, &Authors)
+    if err != nil {
+        fmt.Println("Error parsing author data:", err)
+    }
+}
 
 func showAuthorInfo(author *Author) {
     fmt.Println("ID:", author.Id)

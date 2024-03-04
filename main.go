@@ -2,7 +2,6 @@ package main
 
 import (
     "bufio"
-    "encoding/json"
     "fmt"
     "library-management-system/author"
     "library-management-system/book"
@@ -11,43 +10,9 @@ import (
 )
 
 func readJSONData() {
-    // reading books.json
-    file, err := os.ReadFile("data/books.json")
-    if err != nil {
-        fmt.Println("Error reading book data:", err)
-        return
-    }
-    // parsing books.json
-    err = json.Unmarshal(file, &book.Books)
-    if err != nil {
-        fmt.Println("Error parsing book data:", err)
-        return
-    }
-
-    // reading authors.json
-    file, err = os.ReadFile("data/authors.json")
-    if err != nil {
-        fmt.Println("Error reading author data:", err)
-        return
-    }
-    // parsing authors.json
-    err = json.Unmarshal(file, &author.Authors)
-    if err != nil {
-        fmt.Println("Error parsing author data:", err)
-        return
-    }
-
-    // reading customers.json
-    file, err = os.ReadFile("data/customers.json")
-    if err != nil {
-        fmt.Println("Error reading customer data:", err)
-        return
-    }
-    // parsing customers.json
-    err = json.Unmarshal(file, &customer.Customers)
-    if err != nil {
-        fmt.Println("Error parsing customer data:", err)
-    }
+    author.ReadAuthorsData()
+    book.ReadBooksData()
+    customer.ReadCustomersData()
 }
 
 func showMenu() {

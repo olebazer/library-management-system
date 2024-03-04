@@ -19,6 +19,20 @@ type Book struct {
 
 var Books = []Book{}
 
+func ReadBooksData() {
+    // reading books.json
+    file, err := os.ReadFile("data/books.json")
+    if err != nil {
+        fmt.Println("Error reading books data:", err)
+        return
+    }
+    // parsing books.json
+    err = json.Unmarshal(file, &Books)
+    if err != nil {
+        fmt.Println("Error parsing book data:", err)
+    }
+}
+
 func showBookInfo(book *Book) {
     fmt.Println("ID:", book.Id)
     fmt.Println("Title:", book.Title)
@@ -29,7 +43,7 @@ func showBookInfo(book *Book) {
     fmt.Printf("Available: %t\n\n", book.Available)
 }
 
-func (book Book) getAuthor() author.Author {
+func (book *Book) getAuthor() author.Author {
     for _, author := range author.Authors {
         if author.Id == book.AuthorId {
             return author
