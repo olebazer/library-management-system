@@ -58,7 +58,7 @@ func CreateBook() {
     scanner.Scan()
     authorId, err := strconv.Atoi(scanner.Text())
     if err != nil {
-        fmt.Printf("Book creation failed"\n\n)
+        fmt.Printf("Book creation failed\n\n")
         return
     }
     fmt.Print("Enter release date: ")
