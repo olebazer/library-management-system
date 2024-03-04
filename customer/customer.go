@@ -45,7 +45,7 @@ func CreateCustomer() {
     fmt.Println()
 
     // write Customers to json file
-    file, err := os.Create("data/Customers.json")
+    file, err := os.Create("data/customers.json")
     if err != nil {
         fmt.Println("Error creating Customers file:", err)
         return
