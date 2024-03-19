@@ -70,6 +70,5 @@ func CreateCustomer() {
     err = encoder.Encode(Customers)
     if err != nil {
         fmt.Println("Error encoding Customers JSON:", err)
-        return
     }
 }
