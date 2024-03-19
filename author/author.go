@@ -74,6 +74,5 @@ func CreateAuthor() {
     err = encoder.Encode(Authors)
     if err != nil {
         fmt.Println("Error encoding Authors JSON:", err)
-        return
     }
 }
