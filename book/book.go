@@ -95,6 +95,5 @@ func CreateBook() {
     err = encoder.Encode(Books)
     if err != nil {
         fmt.Println("Error encoding Books JSON:", err)
-        return
     }
 }
